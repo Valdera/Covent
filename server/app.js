@@ -7,6 +7,7 @@ const cookieParser = require("cookie-parser");
 const CustomError = require("./utils/customError");
 const errorController = require("./controllers/errorController");
 const pingRouter = require("./routes/pingRoutes");
+const patientRouter = require("./routes/patientRoutes");
 
 // Init express application
 const app = express();
@@ -24,6 +25,7 @@ app.use(cookieParser());
 // ROUTES
 // Ping Routes
 app.use("/v1/ping", pingRouter);
+app.use("/v1/patient", patientRouter);
 
 // Global Routes
 app.all("*", (req, res, next) => {

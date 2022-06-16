@@ -5,6 +5,8 @@ const errorController = (err, req, res, next) => {
   err.statusCode = err.statusCode || 500;
   err.status = err.status || "error";
 
+  console.log("MASUKIN", err);
+
   if (config.NodeEnv === "PRODUCTION") {
     let error = { ...err };
     error.message = err.message;
@@ -29,35 +31,31 @@ const errorController = (err, req, res, next) => {
 
 // To send a generic error message on dev mode
 const sendErrorDev = (err, req, res) => {
-  if (req.originalUrl.startsWith("/api")) {
-    return res.status(err.statusCode).json({
-      status: err.status,
-      error: err,
-      message: err.message,
-      stack: err.stack,
-    });
-  }
+  return res.status(err.statusCode).json({
+    status: err.status,
+    error: err,
+    message: err.message,
+    stack: err.stack,
+  });
 };
 
 // To send a generic error message on prod mode
 const sendErrorProd = (err, req, res) => {
-  if (req.originalUrl.startsWith("/api")) {
-    // A) Operational, trusted error: send message to client
-    if (err.isOperational) {
-      return res.status(err.statusCode).json({
-        status: err.status,
-        message: err.message,
-      });
-    }
-    // B) Programming or other unknown error: don't leak error details
-    // Log error
-    console.error("ERROR 💥", err);
-    // Send generic message
-    return res.status(500).json({
-      status: "error",
-      message: "Something went very wrong!",
+  // A) Operational, trusted error: send message to client
+  if (err.isOperational) {
+    return res.status(err.statusCode).json({
+      status: err.status,
+      message: err.message,
     });
   }
+  // B) Programming or other unknown error: don't leak error details
+  // Log error
+  console.error("ERROR 💥", err);
+  // Send generic message
+  return res.status(500).json({
+    status: "error",
+    message: "Something went very wrong!",
+  });
 };
 
 module.exports = errorController;
