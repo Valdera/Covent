@@ -8,6 +8,6 @@ const patientSchema = new mongoose.Schema({
 
 });
 
-const Patient = mongoose.model("Patient", patientSchema);
+const Schedule = mongoose.model("Schedule", scheduleSchema);
 
-module.exports = Patient;
+module.exports = Schedule;
