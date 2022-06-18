@@ -17,12 +17,40 @@ const patientSchema = new mongoose.Schema({
       message: "{VALUE} is not supported",
     },
   },
+  address: {
+    type: String,
+    required: [true, "Please enter your address"],
+  },
+  phoneNumber: {
+    type: String,
+    required: [true, "Please enter your phone number"],
+  },
+  ktpNumber: {
+    type: String,
+    required: [true, "Please enter your NIK"],
+  },
   diagnoseHistory: [
     {
       type: mongoose.Schema.ObjectId,
       ref: "Diagnose",
     },
   ],
+  createdAt: {
+    type: Date,
+    required: [true, "Please enter the date"],
+  },
+  createdBy: {
+    type: mongoose.Schema.ObjectId,
+    ref: "Admin",
+  },
+  updatedAt: {
+    type: Date,
+    required: [true, "Please enter the date"],
+  },
+  deletedAt: {
+    type: Date,
+    required: [true, "Please enter the date"],
+  },
 });
 
 const Patient = mongoose.model("Patient", patientSchema);
