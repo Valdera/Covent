@@ -9,10 +9,10 @@ exports.createDiagnose = catchAsync(async (req, res, next) => {
     deletedAt, createdBy, createdAt, updatedAt } = req.body;
 
   // insert to database
-  const diagnose = await patientRepository.createDiagnose(service, doctorName, disease,
+  const diagnose = await diagnoseRepository.createDiagnose(service, doctorName, disease,
     description, deletedAt, createdBy, createdAt, updatedAt);
 
-  if (patient instanceof Error) {
+  if (diagnose instanceof Error) {
     return next(new CustomError("Cannot create document", 404));
   }
 
