@@ -5,10 +5,12 @@ const patientRepository = require("../repositories/patientRepository");
 
 exports.createPatient = catchAsync(async (req, res, next) => {
   // validasi request
-  const { name, age, gender } = req.body;
+  const { name, age, gender, address, phoneNumber, ktpNumber, diagonoseHistory, createdAt,
+    updatedAt, createdBy, deletedAt} = req.body;
 
   // insert to database
-  const patient = await patientRepository.createPatient(name, age, gender);
+  const patient = await patientRepository.createPatient(name, age, gender, address, phoneNumber,
+    ktpNumber, diagonoseHistory, createdAt, updatedAt, createdBy, deletedAt);
 
   if (patient instanceof Error) {
     return next(new CustomError("Cannot create document", 404));
