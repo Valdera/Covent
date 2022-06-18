@@ -14,9 +14,13 @@ const bookingSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please enter the doctor name"],
   },
-  scheduleId: {
-    type: mongoose.Schema.ObjectId,
-    ref: "Schedule",
+  disease: {
+    type: String,
+    required: [true, "Please enter the disease"],
+  },
+  description: {
+    type: String,
+    required: [true, "Please enter the description"],
   },
   acceptedBy: {
     type: mongoose.Schema.ObjectId,
@@ -36,14 +40,6 @@ const bookingSchema = new mongoose.Schema({
   },
 });
 
-bookingSchema.pre(/^find/, function (next) {
-  this.populate({
-    path: "service",
-    select: "doctor",
-  });
-  next();
-});
+const Diagnose = mongoose.model("Diagnose", diagnoseSchema);
 
-const Booking = mongoose.model("Booking", bookingSchema);
-
-module.exports = Booking;
+module.exports = Diagnose;
