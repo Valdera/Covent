@@ -22,7 +22,7 @@ const bookingSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please enter the description"],
   },
-  acceptedBy: {
+  createdBy: {
     type: mongoose.Schema.ObjectId,
     ref: "Admin",
   },
