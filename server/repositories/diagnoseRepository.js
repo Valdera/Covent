@@ -1,6 +1,6 @@
 const Diagnose = require("../models/diagnoseModel");
 
-exports.createPatient = async (service, doctorName, disease, description, 
+exports.createDiagnose = async (service, doctorName, disease, description, 
     deletedAt, createdBy, createdAt, updatedAt) => {
   try {
     const doc = await Diagnose.create({
