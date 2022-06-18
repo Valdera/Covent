@@ -5,7 +5,7 @@ const patientSchema = new mongoose.Schema({
     type: Number,
     required: [true, "Please enter availablility"],
   },
-  scheduleStart {
+  scheduleStart: {
     type: Date,
     required: [true, "Please enter the date"],
   },
