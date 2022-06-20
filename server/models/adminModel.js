@@ -14,16 +14,13 @@ const adminSchema = new mongoose.Schema({
     },
   },
   createdAt: {
-    type: Date,
-    required: [true, "Please enter the date"],
+    type: Date
   },
   updatedAt: {
-    type: Date,
-    required: [true, "Please enter the date"],
+    type: Date
   },
   deletedAt: {
-    type: Date,
-    required: [true, "Please enter the date"],
+    type: Date
   },
 });
 

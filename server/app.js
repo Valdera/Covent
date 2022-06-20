@@ -10,6 +10,7 @@ const pingRouter = require("./routes/pingRoutes");
 const patientRouter = require("./routes/patientRoutes");
 const serviceRouter = require("./routes/serviceRoutes");
 const scheduleRouter = require("./routes/scheduleRoutes");
+const adminRouter = require("./routes/adminRoutes");
 
 // Init express application
 const app = express();
@@ -30,6 +31,7 @@ app.use("/v1/ping", pingRouter);
 app.use("/v1/patient", patientRouter);
 app.use("/v1/service", serviceRouter);
 app.use("/v1/schedule", scheduleRouter);
+app.use("/v1/admin", adminRouter);
 
 // Global Routes
 app.all("*", (req, res, next) => {

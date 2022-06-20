@@ -26,3 +26,40 @@ exports.getServiceByID = async (serviceId) => {
     return err;
   }
 };
+
+exports.getAllService = async () => {
+  try {
+    const doc = await Service.find();
+
+    return doc;
+  } catch (err) {
+    return err;
+  }
+};
+
+exports.updateServiceByID = async (serviceId, body) => {
+
+  try {
+    const service = await Service.findByIdAndUpdate(serviceId, body, {
+      new: true,
+      runValidators: true,
+    });
+
+    return service;
+  } catch (err) {
+    return err;
+  }
+};
+
+exports.deleteServiceByID = async (serviceId) => {
+  // Do we need this because there is deleted by in the table?
+
+  try {
+    const service = await Service.findByIdAndDelete(serviceId);
+
+    return service;
+  } catch (err) {
+    return err;
+  }
+};
+
