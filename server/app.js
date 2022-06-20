@@ -8,6 +8,7 @@ const CustomError = require("./utils/customError");
 const errorController = require("./controllers/errorController");
 const pingRouter = require("./routes/pingRoutes");
 const patientRouter = require("./routes/patientRoutes");
+const serviceRouter = require("./routes/serviceRoutes");
 
 // Init express application
 const app = express();
@@ -26,6 +27,7 @@ app.use(cookieParser());
 // Ping Routes
 app.use("/v1/ping", pingRouter);
 app.use("/v1/patient", patientRouter);
+app.use("/v1/service", serviceRouter);
 
 // Global Routes
 app.all("*", (req, res, next) => {

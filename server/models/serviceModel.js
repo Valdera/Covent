@@ -24,8 +24,7 @@ const serviceSchema = new mongoose.Schema({
     required: [true, "Please enter the date"],
   },
   deletedAt: {
-    type: Date,
-    required: [true, "Please enter the date"],
+    type: Date
   },
 });
 
