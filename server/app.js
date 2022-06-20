@@ -9,6 +9,7 @@ const errorController = require("./controllers/errorController");
 const pingRouter = require("./routes/pingRoutes");
 const patientRouter = require("./routes/patientRoutes");
 const serviceRouter = require("./routes/serviceRoutes");
+const scheduleRouter = require("./routes/scheduleRoutes");
 
 // Init express application
 const app = express();
@@ -28,6 +29,7 @@ app.use(cookieParser());
 app.use("/v1/ping", pingRouter);
 app.use("/v1/patient", patientRouter);
 app.use("/v1/service", serviceRouter);
+app.use("/v1/schedule", scheduleRouter);
 
 // Global Routes
 app.all("*", (req, res, next) => {

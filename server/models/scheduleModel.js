@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const patientSchema = new mongoose.Schema({
+const scheduleSchema = new mongoose.Schema({
   available: {
     type: Number,
     required: [true, "Please enter availablility"],

@@ -4,36 +4,41 @@ const CustomError = require("../utils/customError");
 const serviceRepository = require("../repositories/serviceRepository");
 
 exports.createService = catchAsync(async (req, res, next) => {
-    // validasi request
-    const { createdAt, schedule, doctor, updateAt, createdBy } = req.body;
-    // insert to database
-    const service = await serviceRepository.createService(createdAt, schedule, doctor, updateAt, createdBy);
+  // validasi request
+  const { schedule, doctor } = req.body;
 
-    if (service instanceof Error) {
-        return next(new CustomError("Cannot create document", 404));
-    }
+  createdAt = Date.now();
 
-    // send response
-    res.status(200).json({
-        status: "success",
-        data: service,
-    });
+  // insert to database
+  const service = await serviceRepository.createService(schedule, doctor);
+
+  if (service instanceof Error) {
+    return next(new CustomError("Cannot create document", 404));
+  }
+
+  // send response
+  res.status(201).json({
+    status: "success",
+    data: service,
+  });
 });
 
-exports.readServiceID = catchAsync(async (req, res, next) => {
-    // validasi request
-    const {createdAt, schedule, doctor, updateAt, createdBy, deletedAt } = req.body;
+exports.getServiceByID = catchAsync(async (req, res, next) => {
+  const serviceId = req.params.id;
+  if (!serviceId) {
+    return next(new CustomError("Please input a correct id", 401));
+  }
 
-    // insert to database
-    const patient = await serviceRepository.readServiceID(createdAt, schedule, doctor, updateAt, createdBy, deletedAt);
+  // insert to database
+  const patient = await serviceRepository.getServiceByID(serviceId);
 
-    if (patient instanceof Error) {
-        return next(new CustomError("Cannot create document", 404));
-    }
+  if (patient instanceof Error) {
+    return next(new CustomError("Cannot create document", 404));
+  }
 
-    // send response
-    res.status(200).json({
-        status: "success",
-        data: patient,
-    });
+  // send response
+  res.status(200).json({
+    status: "success",
+    data: patient,
+  });
 });

@@ -13,7 +13,6 @@ const serviceSchema = new mongoose.Schema({
   ],
   createdAt: {
     type: Date,
-    required: [true, "Please enter the date"],
   },
   createdBy: {
     type: mongoose.Schema.ObjectId,
@@ -21,10 +20,9 @@ const serviceSchema = new mongoose.Schema({
   },
   updatedAt: {
     type: Date,
-    required: [true, "Please enter the date"],
   },
   deletedAt: {
-    type: Date
+    type: Date,
   },
 });
 

@@ -1,30 +1,28 @@
 const Service = require("../models/serviceModel");
-const catchAsync = require('../utils/catchAsync');
+const catchAsync = require("../utils/catchAsync");
 
-exports.createService = async (createdAt, schedule, doctor, updateAt, createdBy) => {
-    try {
-        const doc = await Service.create({
-            createdAt: createdAt,
-            schedule: schedule,
-            doctor: doctor,
-            updateAt: createdAt,
-            createdBy: createdBy
-        });
+exports.createService = async (schedule, doctor) => {
+  try {
+    const createdAt = Date.now();
 
-        return doc;
-    } catch (err) {
-        return err;
-    }
+    const doc = await Service.create({
+      createdAt: createdAt,
+      schedule: schedule,
+      doctor: doctor,
+    });
+
+    return doc;
+  } catch (err) {
+    return err;
+  }
 };
 
-exports.readServiceID = async (createdAt, schedule, doctor, updateAt, createdBy, deletedAt) => {
-    //
-    // console.log(tour);
-    try{
-        const ser = await Service.findById(req.params.serviceId);
-        console.log(ser);
-    } catch (err){
-        return err;
-    }
+exports.getServiceByID = async (serviceId) => {
+  try {
+    const service = await Service.findById(serviceId);
 
+    return service;
+  } catch (err) {
+    return err;
+  }
 };
