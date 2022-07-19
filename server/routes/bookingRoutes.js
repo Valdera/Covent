@@ -10,7 +10,7 @@ const router = express.Router();
 router.route("/").post(bookingController.createBooking);
 router.route("/").get(bookingController.getAllBooking);
 router.route("/:id").get(bookingController.getBookingByID);
-router.route("/:id").patch(bookingController.updateAdminById);
+router.route("/:id").patch(bookingController.updateBookingById);
 router.route("/:id").delete(bookingController.deleteBookingById);
 
 module.exports = router;
