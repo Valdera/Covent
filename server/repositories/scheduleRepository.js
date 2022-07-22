@@ -2,10 +2,13 @@ const Schedule = require("../models/scheduleModel");
 
 exports.createSchedule = async (available, scheduleStart, scheduleEnd) => {
   try {
+    const createdAt = Date.now();
+
     const doc = await Schedule.create({
       available: available,
       scheduleStart: scheduleStart,
       scheduleEnd: scheduleEnd,
+      createdAt: createdAt,
     });
 
     return doc;

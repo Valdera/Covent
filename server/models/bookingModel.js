@@ -4,10 +4,10 @@ const bookingSchema = new mongoose.Schema({
   patientId: {
     type: mongoose.Schema.ObjectId,
     ref: "Patient",
+    required: [true, "Please enter the patient ID"],
   },
   status: {
     type: String,
-    required: [true, "Please enter the status"],
     enum: {
       values: ["CREATED", "ACCEPTED", "DONE", "CANCELLED"],
       message: "{VALUE} is not supported",
@@ -16,11 +16,12 @@ const bookingSchema = new mongoose.Schema({
   service: {
     type: mongoose.Schema.ObjectId,
     ref: "Service",
-    required: [true, "Review must belong to a user"],
+    required: [true, "Please enter the service ID"],
   },
   scheduleId: {
     type: mongoose.Schema.ObjectId,
     ref: "Schedule",
+    required: [true, "Please enter the schedule ID"],
   },
   acceptedBy: {
     type: mongoose.Schema.ObjectId,
@@ -28,15 +29,12 @@ const bookingSchema = new mongoose.Schema({
   },
   createdAt: {
     type: Date,
-    required: [true, "Please enter the date"],
   },
   updatedAt: {
     type: Date,
-    required: [true, "Please enter the date"],
   },
   deletedAt: {
     type: Date,
-    required: [true, "Please enter the date"],
   },
 });
 

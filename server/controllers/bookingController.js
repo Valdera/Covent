@@ -2,21 +2,43 @@ const catchAsync = require("../utils/catchAsync");
 const CustomError = require("../utils/customError");
 
 const bookingRepository = require("../repositories/bookingRepository");
+const patientRepository = require("../repositories/patientRepository");
+const serviceRepository = require("../repositories/serviceRepository");
+const scheduleRepository = require("../repositories/scheduleRepository");
 
 exports.createBooking = catchAsync(async (req, res, next) => {
   // validasi request
-  const { patientId, service, scheduleId, acceptedBy } = req.body;
+  const { patientId, service, scheduleId } = req.body;
+
+  const patientCheck = await patientRepository.getPatientByID(patientId);
+  if (patientCheck == null) {
+    return next(new CustomError("Patient ID is invalid"));
+  }
+
+  const serviceCheck = await serviceRepository.getServiceByID(service);
+  if (serviceCheck == null) {
+    return next(new CustomError("Service ID is invalid"));
+  }
+
+  if (serviceCheck.schedule.includes(scheduleId) == false) {
+    return next(new CustomError("Schedule ID is invalid"));
+  }
+
+  const schedule = await scheduleRepository.getScheduleByID(scheduleId);
+  console.log(schedule);
+
+  // TODO: Check Available in schedule
+  // TODO: Update Available in schedule
 
   // insert to database
   const booking = await bookingRepository.createBooking(
     patientId,
     service,
-    scheduleId,
-    acceptedBy
+    scheduleId
   );
 
   if (booking instanceof Error) {
-    return next(new CustomError("Cannot create admin", 404));
+    return next(new CustomError("Cannot create booking", 404));
   }
 
   // send response

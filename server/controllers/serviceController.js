@@ -2,17 +2,28 @@ const catchAsync = require("../utils/catchAsync");
 const CustomError = require("../utils/customError");
 
 const serviceRepository = require("../repositories/serviceRepository");
+const adminRepository = require("../repositories/adminRepository");
+const scheduleRepository = require("../repositories/scheduleRepository");
 
 exports.createService = catchAsync(async (req, res, next) => {
   // validasi request
-  const { schedule, doctor } = req.body;
+  const { schedule, doctor, name } = req.body;
 
+  const doctorCheck = await adminRepository.getAdminByID(doctor, "DOCTOR");
+  if (doctorCheck == null) {
+    return next(new CustomError("Doctor ID is not valid", 404));
+  }
+
+  const scheduleCheck = await scheduleRepository.getScheduleByID(schedule);
+  if (scheduleCheck == null) {
+    return next(new CustomError("Schedule ID is not valid", 404));
+  }
 
   // insert to database
-  const service = await serviceRepository.createService(schedule, doctor);
+  const service = await serviceRepository.createService(name, schedule, doctor);
 
   if (service instanceof Error) {
-    return next(new CustomError("Cannot create document", 404));
+    return next(new CustomError("Cannot create service", 404));
   }
 
   // send response
@@ -64,10 +75,9 @@ exports.deleteServiceById = catchAsync(async (req, res, next) => {
   });
 });
 
-
 exports.updateServiceById = catchAsync(async (req, res, next) => {
   const serviceId = req.params.id;
-  req.body['UpdatedAt'] = Date.now(); // Check if this function work
+  req.body["UpdatedAt"] = Date.now(); // Check if this function work
 
   if (!serviceId) {
     return next(new CustomError("Please input a correct id", 401));
@@ -75,8 +85,8 @@ exports.updateServiceById = catchAsync(async (req, res, next) => {
 
   // insert to database
   const service = await serviceRepository.updateServiceByID(
-      serviceId,
-      req.body
+    serviceId,
+    req.body
   );
 
   if (service instanceof Error) {

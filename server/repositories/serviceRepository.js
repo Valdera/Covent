@@ -1,11 +1,12 @@
 const Service = require("../models/serviceModel");
 const catchAsync = require("../utils/catchAsync");
 
-exports.createService = async (schedule, doctor) => {
+exports.createService = async (name, schedule, doctor) => {
   try {
     const createdAt = Date.now();
 
     const doc = await Service.create({
+      name: name,
       createdAt: createdAt,
       schedule: schedule,
       doctor: doctor,
@@ -38,7 +39,6 @@ exports.getAllService = async () => {
 };
 
 exports.updateServiceByID = async (serviceId, body) => {
-
   try {
     const service = await Service.findByIdAndUpdate(serviceId, body, {
       new: true,
@@ -62,4 +62,3 @@ exports.deleteServiceByID = async (serviceId) => {
     return err;
   }
 };
-
