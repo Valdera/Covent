@@ -6,6 +6,13 @@ const patientRepository = require("../repositories/patientRepository");
 const serviceRepository = require("../repositories/serviceRepository");
 const scheduleRepository = require("../repositories/scheduleRepository");
 
+// exports.cancelAppointment = catchAsync(async (req, res, next) => {
+//   // validasi request
+//   const { patientId, service, scheduleId } = req.body;
+//
+//
+// })
+
 exports.createBooking = catchAsync(async (req, res, next) => {
   // validasi request
   const { patientId, service, scheduleId } = req.body;
@@ -14,7 +21,6 @@ exports.createBooking = catchAsync(async (req, res, next) => {
   if (patientCheck == null) {
     return next(new CustomError("Patient ID is invalid"));
   }
-
   const serviceCheck = await serviceRepository.getServiceByID(service);
   if (serviceCheck == null) {
     return next(new CustomError("Service ID is invalid"));
@@ -25,10 +31,18 @@ exports.createBooking = catchAsync(async (req, res, next) => {
   }
 
   const schedule = await scheduleRepository.getScheduleByID(scheduleId);
-  console.log(schedule);
 
-  // TODO: Check Available in schedule
-  // TODO: Update Available in schedule
+  // TODO: Check Available in schedule (DONE)
+
+  if (schedule.available == 0){
+    return next(new CustomError("Schedule is not available"));
+  }
+
+  // TODO: Update Available in schedule (DONE)
+  schedule.available = schedule.available - 1
+
+  await scheduleRepository.updateScheduleByID(scheduleId, schedule);
+
 
   // insert to database
   const booking = await bookingRepository.createBooking(
