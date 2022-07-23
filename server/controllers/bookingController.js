@@ -6,12 +6,40 @@ const patientRepository = require("../repositories/patientRepository");
 const serviceRepository = require("../repositories/serviceRepository");
 const scheduleRepository = require("../repositories/scheduleRepository");
 
-// exports.cancelAppointment = catchAsync(async (req, res, next) => {
-//   // validasi request
-//   const { patientId, service, scheduleId } = req.body;
-//
-//
-// })
+exports.cancelAppointment = catchAsync(async (req, res, next) => {
+  // validasi request
+  const { bookingId } = req.body;
+
+  const booking = await bookingRepository.getBookingByID(bookingId);
+  if (booking == null) {
+    return next(new CustomError("Booking ID is invalid"));
+  }
+
+  if ( booking.status == 'CANCELLED'){
+    return next(new CustomError("Booking ID is already cancelled"));
+  }
+
+  booking.status = 'CANCELLED'
+
+  const booking_test = await bookingRepository.updateBookingByID(bookingId, booking);
+  const schedule = await scheduleRepository.getScheduleByID(booking.scheduleId);
+
+
+  if (schedule.available == 0){
+    return next(new CustomError("Schedule is not available"));
+  }
+
+  schedule.available = schedule.available + 1
+
+  await scheduleRepository.updateScheduleByID(booking.scheduleId, schedule);
+
+  // send response
+  res.status(201).json({
+    status: "success",
+    data: booking_test,
+  });
+
+})
 
 exports.createBooking = catchAsync(async (req, res, next) => {
   // validasi request
