@@ -6,6 +6,55 @@ const patientRepository = require("../repositories/patientRepository");
 const serviceRepository = require("../repositories/serviceRepository");
 const scheduleRepository = require("../repositories/scheduleRepository");
 
+exports.acceptAppointment = catchAsync(async (req, res, next) => {
+  const { bookingId } = req.body;
+
+  const booking = await bookingRepository.getBookingByID(bookingId);
+  if (booking == null) {
+    return next(new CustomError("Booking ID is invalid"));
+  }
+
+  if ( booking.status == 'ACCEPTED'){
+    return next(new CustomError("Booking ID is already accepted"));
+  }
+
+  booking.status = 'ACCEPTED'
+
+  console.log((booking))
+
+  const update = await bookingRepository.updateBookingByID(bookingId, booking);
+
+  res.status(201).json({
+    status: "success",
+    data: update,
+  });
+
+})
+
+exports.completeAppointment = catchAsync(async (req, res, next) => {
+  const { bookingId } = req.body;
+
+  const booking = await bookingRepository.getBookingByID(bookingId);
+  if (booking == null) {
+    return next(new CustomError("Booking ID is invalid"));
+  }
+
+  if ( booking.status == 'DONE'){
+    return next(new CustomError("Booking ID is already done"));
+  }
+
+  booking.status = 'DONE'
+
+  const update = await bookingRepository.updateBookingByID(bookingId, booking);
+
+  res.status(201).json({
+    status: "success",
+    data: update,
+  });
+
+})
+
+
 exports.cancelAppointment = catchAsync(async (req, res, next) => {
   // validasi request
   const { bookingId } = req.body;
